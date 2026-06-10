@@ -51,7 +51,7 @@ export default function Page() {
 
                 <div className="flex items-center justify-between text-white" >
                     <h1 className="text-3xl md:text-4xl font-bold text-[#f8e7a1]">
-                        Users Management
+                        Users <span className="sm:inline hidden">Management</span>
                     </h1>
                     <span onClick={() => getUsers()} style={{ background: gold.base }} className=" cursor-pointer text-black tracking-wider text-[18px] capitalize px-5 py-2 rounded-2xl hover:scale-105 duration-500 flex items-center gap-1 font-semibold"><MdRefresh /> Refresh</span>
                 </div>

@@ -147,7 +147,7 @@ export default function ViewCategory({ setLoading, fetchAllCategories, loading, 
                                 flex items-center justify-between
                             "
                     >
-                        View Categories
+                        <div className="sm:inline hidden">View Categories</div>
 
 
                         <div className="flex items-center justify-between gap-5">
@@ -177,7 +177,7 @@ export default function ViewCategory({ setLoading, fetchAllCategories, loading, 
                                         lg:text-base
                                         "
                                 >
-                                    Total Categories
+                                    <span className="sm:inline hidden">Total</span> Categories
                                 </span>
 
                                 {/* Count */}
@@ -204,11 +204,11 @@ export default function ViewCategory({ setLoading, fetchAllCategories, loading, 
                                 </div>
                             </div>
 
-                            <span onClick={() => fetchAllCategories()} style={{ background: gold.mid }} className=" cursor-pointer text-black tracking-wider text-[18px] capitalize px-5 py-3 rounded-2xl hover:scale-105 duration-500 flex items-center gap-1 font-semibold"><MdRefresh /> Refresh</span>
+                            <span onClick={() => fetchAllCategories()} style={{ background: gold.mid }} className=" cursor-pointer text-black tracking-wider text-[18px] capitalize sm:px-5 px-2 py-3 rounded-2xl hover:scale-105 duration-500 flex items-center gap-1 font-semibold"><MdRefresh /> Refresh</span>
                         </div>
                     </h1>
 
-                    <p className="text-gray-400 mt-2">
+                    <p className="text-gray-400 my-5">
                         Manage all product categories
                     </p>
 

@@ -273,7 +273,7 @@ export default function ViewProduct({ setLoading, fetchAllProducts, loading, pro
                                 flex items-center justify-between
                             "
                     >
-                        View products
+                        <div className="sm:inline hidden">View products</div>
 
 
                         <div className="flex items-center justify-between gap-5">
@@ -303,7 +303,7 @@ export default function ViewProduct({ setLoading, fetchAllProducts, loading, pro
                                         lg:text-base
                                         "
                                 >
-                                    Total products
+                                    <span className="sm:inline hidden">Total</span> products
                                 </span>
 
                                 {/* Count */}
@@ -334,7 +334,7 @@ export default function ViewProduct({ setLoading, fetchAllProducts, loading, pro
                         </div>
                     </h1>
 
-                    <p className="text-gray-400 mt-2">
+                    <p className="text-gray-400 my-5">
                         Manage all product products
                     </p>
 
