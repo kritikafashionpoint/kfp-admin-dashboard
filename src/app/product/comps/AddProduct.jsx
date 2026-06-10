@@ -27,6 +27,8 @@ export default function AddProduct({ editId, setEditId, loading, setLoading, cat
         p_finishing: "",
         p_occasion: "",
         p_include_items: "",
+        p_meta_title: "",
+        p_meta_description: "",
         category_id: "",
     });
 
@@ -105,6 +107,8 @@ export default function AddProduct({ editId, setEditId, loading, setLoading, cat
             p_finishing: "",
             p_occasion: "",
             p_include_items: "",
+            p_meta_title: "",
+            p_meta_description: "",
             category_id: "",
         });
 
@@ -195,6 +199,16 @@ export default function AddProduct({ editId, setEditId, loading, setLoading, cat
         formData.append(
             "p_include_items",
             productData.p_include_items
+        );
+
+        formData.append(
+            "p_meta_title",
+            productData.p_meta_title
+        );
+
+        formData.append(
+            "p_meta_description",
+            productData.p_meta_description
         );
 
         // INDEX IMAGE
@@ -579,7 +593,7 @@ export default function AddProduct({ editId, setEditId, loading, setLoading, cat
                     p_short_description: pd.p_short_description,
                     p_full_description: pd.p_full_description,
                     p_type: pd.p_type,
-                    is_top_selling: pd.p_type,
+                    is_top_selling: pd.is_top_selling,
                     p_quantity: pd.p_quantity,
                     p_sale_price: pd.p_sale_price,
                     p_customer_price: pd.p_customer_price,
@@ -589,6 +603,8 @@ export default function AddProduct({ editId, setEditId, loading, setLoading, cat
                     p_finishing: pd.p_finishing,
                     p_occasion: pd.p_occasion,
                     p_include_items: pd.p_include_items,
+                    p_meta_title: pd.p_meta_title,
+                    p_meta_description: pd.p_meta_description
                 })
 
                 setIndexImage(pd.index_image || null);
@@ -747,6 +763,53 @@ export default function AddProduct({ editId, setEditId, loading, setLoading, cat
                                 <span className="relative z-10 flex items-center justify-center gap-1"><MdOutlineAutoFixHigh size={20} /> Auto</span>
                             </span>
                         </div>
+                    </div>
+
+                    {/* META TITLE */}
+                    <div>
+                        <label className="block mb-2 text-red-600">
+                            Meta Title
+                        </label>
+
+                        <input
+                            type="text"
+                            name="p_meta_title"
+                            value={productData.p_meta_title}
+                            onChange={handleChange}
+                            className="
+                                w-full
+                                p-3
+                                rounded-xl
+                                bg-black
+                                border
+                                border-gray-700
+                                outline-none
+                            "
+                        />
+
+                    </div>
+
+                    {/* META Description */}
+                    <div>
+                        <label className="block mb-2 text-red-600">
+                            Meta Description
+                        </label>
+
+                        <input
+                            type="text"
+                            name="p_meta_description"
+                            value={productData.p_meta_description}
+                            onChange={handleChange}
+                            className="
+                                w-full
+                                p-3
+                                rounded-xl
+                                bg-black
+                                border
+                                border-gray-700
+                                outline-none
+                            "
+                        />
                     </div>
 
                     {/* PRODUCT TYPE */}
