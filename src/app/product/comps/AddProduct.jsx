@@ -22,7 +22,7 @@ export default function AddProduct({ editId, setEditId, loading, setLoading, cat
         p_sale_price: "",
         p_customer_price: "",
         p_discount: "",
-        p_advance_payment: "",
+        p_advance_payment: 100,
         p_material: "",
         p_finishing: "",
         p_occasion: "",
