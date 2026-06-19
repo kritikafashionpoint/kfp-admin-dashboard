@@ -11,7 +11,7 @@ export default function Loading() {
           <div className=" absolute inset-0 rounded-full border-4 border-transparent border-t-[#f5d36b] border-r-[#c9a227] animate-spin "></div>{" "}
         </div>{" "}
         {/* Loading Text */}{" "}
-        <p className=" text-[#f5d36b] font-semibold text-lg tracking-[4px] uppercase drop-shadow-[0_0_10px_rgba(245,211,107,0.5)] ">
+        <p className=" text-[#f5d36b] font-semibold text-lg tracking-[4px] uppercase">
           {" "}
           Processing...{" "}
         </p>{" "}
