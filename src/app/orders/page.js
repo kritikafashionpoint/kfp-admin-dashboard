@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import Loading from '../../../Loading'
 import { MdRefresh } from 'react-icons/md'
+import Swal from 'sweetalert2'
 
 export default function Page() {
 
@@ -32,8 +33,8 @@ export default function Page() {
         params: null,
         path: 'user/view-orders',
       })
+      console.log(response.data)
 
-      console.log(response)
 
       if (response?.data?.success) {
         setOrders(response.data.data || [])
@@ -46,11 +47,6 @@ export default function Page() {
     }
   }
 
-  const handleOutForDelivery = (orderId) => {
-    console.log('Out For Delivery:', orderId)
-
-    // API Call Here
-  }
 
   const handleCancelOrder = (orderId) => {
     console.log('Cancel Order:', orderId)
@@ -78,6 +74,70 @@ export default function Page() {
       setSelectedImage(null)
     }, 300)
   }
+
+
+  const handleOutForDelivery = async (order_id) => {
+
+    const result = await Swal.fire({
+      title: "Mark as Out For Delivery?",
+      text: "This order status will be updated.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Update",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#16a34a",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      Swal.fire({
+        title: "Please wait...",
+        text: "Updating order status",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      const response = await post_api({
+        body: { order_id },
+        params: null,
+        path: "user/out-for-delivery",
+      });
+
+      Swal.close();
+
+      if (response?.data?.success) {
+        await Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: response?.data?.message || "Order marked as Out for Delivery",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        fetchAllOrders();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: response?.data?.message || "Failed to update order status",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text:
+          error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black lg:p-6 p-8 ">
@@ -157,133 +217,144 @@ export default function Page() {
 
           <tbody>
 
-            {orders.filter(order => order.payment_status === 'paid').map((order) => (
+            {orders
+              .filter(order => order.payment_status === 'paid')
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .map((order) => (
 
-              order.items.map((item) => (
+                order.items.map((item) => (
 
-                <tr
-                  key={item.order_item_id}
-                  className="border-b hover:bg-amber-200 transition"
-                >
+                  <tr
+                    key={item.order_item_id}
+                    className="border-b hover:bg-amber-200 transition"
+                  >
 
-                  <td className="p-3 font-semibold text-center">
-                    #{order.order_id}
-                  </td>
+                    <td className="p-3 font-semibold text-center">
+                      #{order.order_id}
+                    </td>
 
-                  <td className="p-3">
-                    <div>
-                      <p className="font-semibold capitalize">
-                        {order.customer.name}
-                      </p>
-
-
-                    </div>
-                  </td>
-
-                  <td className="p-3">
-                    <div>
-                      <p>{order.customer.mobile}</p>
-                      <p className="text-xs text-gray-500">
-                        {order.customer.email}
-                      </p>
-                    </div>
-                  </td>
-
-                  <td className="p-3">
-                    <div>
-                      <p className="font-semibold">
-                        {item.product_title}
-                      </p>
-
-                      <p className="text-xs text-gray-500">
-                        {item.p_short_description}
-                      </p>
-                    </div>
-                  </td>
-
-                  <td className="p-3">
-
-                    <img
-                      onClick={() => openImage(item.product_image)}
-                      src={item.product_image}
-                      alt={item.product_title}
-                      className="w-16 h-16 cursor-pointer rounded-lg object-cover border"
-                    />
-
-                  </td>
+                    <td className="p-3">
+                      <div>
+                        <p className="font-semibold capitalize">
+                          {order.customer.name}
+                        </p>
 
 
+                      </div>
+                    </td>
 
-                  <td className="p-3">
-                    {item.quantity}
-                  </td>
+                    <td className="p-3">
+                      <div>
+                        <p>{order.customer.mobile}</p>
+                        <p className="text-xs text-gray-500">
+                          {order.customer.email}
+                        </p>
+                      </div>
+                    </td>
 
-                  <td className="p-3 font-bold text-yellow-600">
-                    ₹{item.price}
-                  </td>
+                    <td className="p-3">
+                      <div>
+                        <p className="font-semibold">
+                          {item.product_title}
+                        </p>
 
-                  <td className="p-3 capitalize">
-                    {order.payment_type}
-                  </td>
+                        <p className="text-xs text-gray-500">
+                          {item.p_short_description}
+                        </p>
+                      </div>
+                    </td>
 
-                  <td className="p-3">
+                    <td className="p-3">
 
-                    <span
-                      className={`px-3 py-1 rounded-md
+                      <img
+                        onClick={() => openImage(item.product_image)}
+                        src={item.product_image}
+                        alt={item.product_title}
+                        className="w-16 h-16 cursor-pointer rounded-lg object-cover border"
+                      />
+
+                    </td>
+
+
+
+                    <td className="p-3">
+                      {item.quantity}
+                    </td>
+
+                    <td className="p-3 font-bold text-yellow-600">
+                      ₹{item.price}
+                    </td>
+
+                    <td className="p-3 capitalize">
+                      {order.payment_type}
+                    </td>
+
+                    <td className="p-3">
+
+                      <span
+                        className={`px-3 py-1 rounded-md
                                     ${order.payment_status === "paid"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                        } `}
-                    >
-                      {order.payment_status}
-                    </span>
-
-                  </td>
-
-                  <td className="p-3">
-
-                    <span
-                      className={`px-3 py-1 rounded-md
-                                    ${order.order_status === "confirmed"
-                          ? "bg-blue-100 text-blue-700"
-                          : order.order_status === "cancelled"
-                            ? "bg-red-100 text-red-700"
-                            : "bg-yellow-100 text-yellow-700"
-                        } `}
-                    >
-                      {order.order_status}
-                    </span>
-
-                  </td>
-
-                  <td className="p-3 text-sm">
-                    {new Date(order.created_at).toLocaleString()}
-                  </td>
-
-                  <td className="p-3">
-
-                    <div className="flex gap-2 justify-center">
-
-                      <button
-                        className="px-4 py-2 rounded-lg bg-linear-to-r from-green-800 to-green-600 text-white text-sm font-semibold hover:scale-105 transition cursor-pointer"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                          } `}
                       >
-                        🚚 Out For Delivery
-                      </button>
+                        {order.payment_status}
+                      </span>
 
-                      <button
-                        className="px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 cursor-pointer  transition"
+                    </td>
+
+                    <td className="p-3">
+
+                      <p
+                        className={`px-3 py-1 rounded-md font-semibold
+                          ${order.order_status === "confirmed"
+                            ? "bg-blue-100 text-blue-700"
+                            : order.order_status === "out_for_delivery"
+                              ? "bg-green-100 text-green-700"
+                              : order.order_status === "cancelled"
+                                ? "bg-red-100 text-red-700"
+                                : "bg-yellow-100 text-yellow-700"
+                          }
+  `}
                       >
-                        ❌ Cancel
-                      </button>
-                    </div>
+                        {order.order_status === "out_for_delivery"
+                          ? "✅ Out For Delivery"
+                          : order.order_status === "confirmed"
+                            ? "📦 Confirmed"
+                            : order.order_status === "cancelled"
+                              ? "❌ Cancelled"
+                              : order.order_status}
+                      </p>
 
-                  </td>
+                    </td>
 
-                </tr>
+                    <td className="p-3 text-sm">
+                      {new Date(order.created_at).toLocaleString()}
+                    </td>
 
-              ))
+                    <td className="p-3">
+                      <div className="flex gap-2 justify-center">
 
-            ))}
+                        {order.order_status === "out_for_delivery" ? (
+                          <span className="px-4 py-2 rounded-lg bg-green-100 text-green-700 font-semibold">
+                            ✅ Out For Delivery
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => handleOutForDelivery(order.order_id)}
+                            className="px-4 py-2 rounded-lg bg-linear-to-r from-green-800 to-green-600 text-white text-sm font-semibold hover:scale-105 transition cursor-pointer"
+                          >
+                            🚚 Out For Delivery
+                          </button>
+                        )}
+                      </div>
+                    </td>
+
+                  </tr>
+
+                ))
+
+              ))}
 
           </tbody>
 
