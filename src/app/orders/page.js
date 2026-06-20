@@ -33,7 +33,7 @@ export default function Page() {
         params: null,
         path: 'user/view-orders',
       })
-      console.log(response.data)
+      console.log(response.data.data[0]?.address);
 
 
       if (response?.data?.success) {
@@ -197,164 +197,162 @@ export default function Page() {
           <thead>
 
             <tr className="bg-black text-white">
-
-              <th className="p-3 text-left">O-ID</th>
-              <th className="p-3 text-left">Customer</th>
-              <th className="p-3 text-left">Contact</th>
-              <th className="p-3 text-left">Product</th>
-              <th className="p-3 text-left">Image</th>
-              <th className="p-3 text-left">Qty</th>
-              <th className="p-3 text-left">Amount</th>
-              <th className="p-3 text-left">Payment Type</th>
-              <th className="p-3 text-left">Payment Status</th>
-              <th className="p-3 text-left">Order Status</th>
-              <th className="p-3 text-left">Date</th>
-              <th className="p-3 text-center">Actions</th>
-
+              <th className="p-4">Order ID</th>
+              <th className="p-4">Customer</th>
+              <th className="p-4">Product</th>
+              <th className="p-4">Amount</th>
+              <th className="p-4">Status</th>
+              <th className="p-4">Action</th>
             </tr>
+
+
 
           </thead>
 
           <tbody>
 
             {orders
-              .filter(order => order.payment_status === 'paid')
+              .filter(order => order.payment_status === "paid")
               .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-              .map((order) => (
+              .map((order) =>
 
                 order.items.map((item) => (
+                  <React.Fragment key={item.order_item_id}>
 
-                  <tr
-                    key={item.order_item_id}
-                    className="border-b hover:bg-amber-200 transition"
-                  >
+                    {/* Main Row */}
+                    <tr className=" bg-amber-200 hover:bg-amber-100 duration-300">
 
-                    <td className="p-3 font-semibold text-center">
-                      #{order.order_id}
-                    </td>
+                      <td className="p-4 font-semibold">
+                        #{order.order_id}
+                      </td>
 
-                    <td className="p-3">
-                      <div>
-                        <p className="font-semibold capitalize">
-                          {order.customer.name}
-                        </p>
+                      <td className="p-4">
+                        {order.customer.name}
+                      </td>
 
+                      <td className="p-4">
+                        <div className="flex items-center gap-3">
 
-                      </div>
-                    </td>
+                          <img
+                            src={item.product_image}
+                            alt=""
+                            className="w-14 h-14 rounded-lg object-cover"
+                          />
 
-                    <td className="p-3">
-                      <div>
-                        <p>{order.customer.mobile}</p>
-                        <p className="text-xs text-gray-500">
-                          {order.customer.email}
-                        </p>
-                      </div>
-                    </td>
+                          <div>
+                            <p className="text-md text-black font-semibold">
+                              {item.product_title}
+                            </p>
 
-                    <td className="p-3">
-                      <div>
-                        <p className="font-semibold">
-                          {item.product_title}
-                        </p>
+                            <p className="text-md text-black font-semibold">
+                              Qty : {item.quantity}
+                            </p>
+                          </div>
 
-                        <p className="text-xs text-gray-500">
-                          {item.p_short_description}
-                        </p>
-                      </div>
-                    </td>
+                        </div>
+                      </td>
 
-                    <td className="p-3">
+                      <td className="p-4 font-bold text-yellow-600">
+                        ₹{item.price}
+                      </td>
 
-                      <img
-                        onClick={() => openImage(item.product_image)}
-                        src={item.product_image}
-                        alt={item.product_title}
-                        className="w-16 h-16 cursor-pointer rounded-lg object-cover border"
-                      />
+                      <td className="p-4">
+                        <span className="px-3 py-1 rounded-lg bg-green-100 text-green-700">
+                          {order.order_status}
+                        </span>
+                      </td>
 
-                    </td>
-
-
-
-                    <td className="p-3">
-                      {item.quantity}
-                    </td>
-
-                    <td className="p-3 font-bold text-yellow-600">
-                      ₹{item.price}
-                    </td>
-
-                    <td className="p-3 capitalize">
-                      {order.payment_type}
-                    </td>
-
-                    <td className="p-3">
-
-                      <span
-                        className={`px-3 py-1 rounded-md
-                                    ${order.payment_status === "paid"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
-                          } `}
-                      >
-                        {order.payment_status}
-                      </span>
-
-                    </td>
-
-                    <td className="p-3">
-
-                      <p
-                        className={`px-3 py-1 rounded-md font-semibold
-                          ${order.order_status === "confirmed"
-                            ? "bg-blue-100 text-blue-700"
-                            : order.order_status === "out_for_delivery"
-                              ? "bg-green-100 text-green-700"
-                              : order.order_status === "cancelled"
-                                ? "bg-red-100 text-red-700"
-                                : "bg-yellow-100 text-yellow-700"
-                          }
-  `}
-                      >
-                        {order.order_status === "out_for_delivery"
-                          ? "✅ Out For Delivery"
-                          : order.order_status === "confirmed"
-                            ? "📦 Confirmed"
-                            : order.order_status === "cancelled"
-                              ? "❌ Cancelled"
-                              : order.order_status}
-                      </p>
-
-                    </td>
-
-                    <td className="p-3 text-sm">
-                      {new Date(order.created_at).toLocaleString()}
-                    </td>
-
-                    <td className="p-3">
-                      <div className="flex gap-2 justify-center">
-
+                      <td className="p-4">
                         {order.order_status === "out_for_delivery" ? (
-                          <span className="px-4 py-2 rounded-lg bg-green-100 text-green-700 font-semibold">
-                            ✅ Out For Delivery
+                          <span className="px-4 py-2 rounded-lg bg-green-100 text-green-700">
+                            Delivered
                           </span>
                         ) : (
                           <button
-                            onClick={() => handleOutForDelivery(order.order_id)}
-                            className="px-4 py-2 rounded-lg bg-linear-to-r from-green-800 to-green-600 text-white text-sm font-semibold hover:scale-105 transition cursor-pointer"
+                            onClick={() =>
+                              handleOutForDelivery(order.order_id)
+                            }
+                            className="px-4 py-2 rounded-lg bg-green-700 text-white"
                           >
                             🚚 Out For Delivery
                           </button>
                         )}
-                      </div>
-                    </td>
+                      </td>
 
-                  </tr>
+                    </tr>
 
+                    {/* Detail Row */}
+                    <tr className="bg-gray-50 border-b-40">
+
+                      <td colSpan={6} className="p-5">
+
+                        <div className="grid grid-cols-3 gap-6">
+
+                          {/* Shipping */}
+                          <div>
+                            <h4 className="font-bold text-black mb-2">
+                              📦 Shipping Address
+                            </h4>
+
+                            {order.address ? (
+                              <>
+                                <p>{order.address.name}</p>
+                                <p>{order.address.mobile}</p>
+                                <p>{order.address.address}</p>
+                                <p>
+                                  {order.address.city} - {order.address.pincode}
+                                </p>
+                              </>
+                            ) : (
+                              <p className="text-red-500">
+                                Address Not Available
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Payment */}
+                          <div>
+                            <h4 className="font-bold mb-2">
+                              💳 Payment Details
+                            </h4>
+
+                            <p>
+                              Type: {order.payment_type}
+                            </p>
+
+                            <p>
+                              Status: {order.payment_status}
+                            </p>
+
+                            <p>
+                              Amount: ₹{order.total_amount}
+                            </p>
+                          </div>
+
+                          {/* Customer */}
+                          <div>
+                            <h4 className="font-bold mb-2">
+                              👤 Customer Details
+                            </h4>
+
+                            <p>{order.customer.name}</p>
+
+                            <p>{order.customer.mobile}</p>
+
+                            <p className="break-all">
+                              {order.customer.email}
+                            </p>
+                          </div>
+
+                        </div>
+
+                      </td>
+
+                    </tr>
+
+                  </React.Fragment>
                 ))
-
-              ))}
+              )}
 
           </tbody>
 
