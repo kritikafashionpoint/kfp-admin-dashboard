@@ -312,9 +312,10 @@ export default function ViewProduct({ setLoading, fetchAllProducts, loading, pro
                                         background: `linear-gradient(to bottom right, ${gold.light}, ${gold.base}, ${gold.dark})`,
                                     }}
                                     className="
-                                            w-[30]
-                                            h-[30]
-                                            px-3
+                                            w-fit
+                                            h-fit
+                                            px-2
+                                            py-2
                                             rounded-full
                                             flex
                                             items-center

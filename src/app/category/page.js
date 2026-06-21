@@ -125,7 +125,7 @@ export default function Page() {
                             }
                     }
                 >
-                    <p className='absolute animate-pulse -top-2 -right-2 w-6 h-6 flex items-center justify-center bg-amber-300 text-black rounded-full'>{categories?.length}</p>
+                    <p className='absolute -top-2 -right-2 w-fit h-fit py-1 px-3 flex items-center justify-center bg-amber-300 text-black rounded-full'>{categories?.length}</p>
                     View Category
                 </span>
 

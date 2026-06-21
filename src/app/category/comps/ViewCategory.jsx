@@ -186,9 +186,10 @@ export default function ViewCategory({ setLoading, fetchAllCategories, loading, 
                                         background: `linear-gradient(to bottom right, ${gold.light}, ${gold.base}, ${gold.dark})`,
                                     }}
                                     className="
-                                            w-[30]
-                                            h-[30]
+                                            w-fit
+                                            h-fit
                                             px-3
+                                            py-2
                                             rounded-full
                                             flex
                                             items-center
