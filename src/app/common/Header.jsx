@@ -27,11 +27,11 @@ export default function Header() {
     { name: "enquiries", link: "enquiries" },
   ];
 
-  useEffect(() => {
-    if (!token && path !== "/verify-otp" && path !== "/forgot-password") {
-      router.push("/");
-    }
-  }, [token, path]);
+  // useEffect(() => {
+  //   if (!token && path !== "/verify-otp" && path !== "/forgot-password") {
+  //     router.push("/");
+  //   }
+  // }, [token, path]);
 
   const dispatch = useDispatch();
 

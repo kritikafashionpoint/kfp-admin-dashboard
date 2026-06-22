@@ -152,7 +152,7 @@ export default function Page() {
                             }
                     }
                 >
-                    <p className='absolute -top-2 -right-2 w-fit h-fit py-1 px-2.5 flex items-center justify-center bg-white text-black rounded-full'>{products?.length || 0}</p>
+                    <p className='absolute -top-2 -right-2 w-fit h-fit py-1 px-2.5 flex items-center justify-center bg-amber-300 text-black rounded-full'>{products?.length || 0}</p>
                     View Products
                 </span>
 
