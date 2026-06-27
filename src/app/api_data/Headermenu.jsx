@@ -1,3 +1,4 @@
+import { ReplaceAll } from "lucide-react";
 import { BiSolidCategory } from "react-icons/bi";
 import { FaBoxOpen, FaCalendar, FaClock, FaHome, FaMicroblog, FaUserTie, FaVolleyballBall } from "react-icons/fa";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -35,6 +36,11 @@ export const HeaderData = [
     title: "Orders",
     slug: "/orders  ",
     icon: <FaBoxOpen />,
+  },
+   {
+    title: "Replacement",
+    slug: "/replacement  ",
+    icon: <ReplaceAll />,
   },
   {
     title: "Enquries",

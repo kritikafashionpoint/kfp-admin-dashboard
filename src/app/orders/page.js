@@ -263,20 +263,62 @@ export default function Page() {
                       </td>
 
                       <td className="p-4">
-                        {order.order_status === "out_for_delivery" ? (
-                          <span className="px-4 py-2 rounded-lg bg-green-100 text-green-700">
-                            Delivered
-                          </span>
-                        ) : (
-                          <button
-                            onClick={() =>
-                              handleOutForDelivery(order.order_id)
-                            }
-                            className="px-4 py-2 rounded-lg bg-green-700 text-white"
-                          >
-                            🚚 Out For Delivery
-                          </button>
-                        )}
+                        <td className="p-4">
+
+                          {order.order_status === "confirmed" && (
+                            <button
+                              onClick={() =>
+                                handleOutForDelivery(order.order_id)
+                              }
+                              className="px-4 py-2 rounded-lg bg-green-700 text-white"
+                            >
+                              🚚 Out For Delivery
+                            </button>
+                          )}
+
+                          {order.order_status === "pending" && (
+                            <span className="px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">
+                              Pending
+                            </span>
+                          )}
+
+                          {order.order_status === "out_for_delivery" && (
+                            <span className="px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">
+                              🚚 Out For Delivery
+                            </span>
+                          )}
+
+                          {order.order_status === "replace_requested" && (
+                            <span className="px-4 py-2 rounded-lg bg-yellow-100 text-yellow-700 font-medium">
+                              🔄 Replacement Requested
+                            </span>
+                          )}
+
+                          {order.order_status === "replacement_approved" && (
+                            <span className="px-4 py-2 rounded-lg bg-purple-100 text-purple-700 font-medium">
+                              ✅ Replacement Approved
+                            </span>
+                          )}
+
+                          {order.order_status === "replacement_rejected" && (
+                            <span className="px-4 py-2 rounded-lg bg-red-100 text-red-700 font-medium">
+                              ❌ Replacement Rejected
+                            </span>
+                          )}
+
+                          {order.order_status === "delivered" && (
+                            <span className="px-4 py-2 rounded-lg bg-green-100 text-green-700 font-medium">
+                              ✅ Delivered
+                            </span>
+                          )}
+
+                          {order.order_status === "cancelled" && (
+                            <span className="px-4 py-2 rounded-lg bg-red-100 text-red-700 font-medium">
+                              ❌ Cancelled
+                            </span>
+                          )}
+
+                        </td>
                       </td>
 
                     </tr>
