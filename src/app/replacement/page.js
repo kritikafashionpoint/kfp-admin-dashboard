@@ -68,145 +68,145 @@ export default function Page() {
     const handleApprove = async (id) => {
 
         const result = await Swal.fire({
-
             title: "Approve Replacement?",
             text: "Replacement request will be approved.",
             icon: "question",
             showCancelButton: true,
             confirmButtonColor: "#16a34a",
-            confirmButtonText: "Approve"
+            cancelButtonColor: "#6b7280",
+            confirmButtonText: "Approve",
+            cancelButtonText: "Cancel"
+        });
 
-        })
-
-        if (!result.isConfirmed) return
+        if (!result.isConfirmed) return;
 
         try {
 
             Swal.fire({
                 title: "Please Wait...",
+                text: "Approving replacement request...",
                 allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
                 didOpen: () => Swal.showLoading()
-            })
+            });
 
             const response = await post_api({
-
                 body: {
                     replacement_request_id: id
                 },
-
                 params: null,
-
                 path: "user/approve-replacement"
+            });
 
-            })
+            Swal.close();
 
-            Swal.close()
-
-            if (response.data.success) {
-
-                await Swal.fire({
-
-                    icon: "success",
-                    title: "Approved"
-
-                })
-
-                fetchRequests()
-
+            if (!response?.data?.success) {
+                return Swal.fire({
+                    icon: "error",
+                    title: "Failed",
+                    text: response?.data?.message || "Unable to approve request."
+                });
             }
+
+            await fetchRequests();
+
+            await Swal.fire({
+                icon: "success",
+                title: "Approved",
+                text: response.data.message,
+                timer: 1800,
+                showConfirmButton: false
+            });
 
         } catch (error) {
 
+            Swal.close();
+
             Swal.fire({
-
                 icon: "error",
-
                 title: "Error",
-
-                text: error?.response?.data?.message || "Something went wrong"
-
-            })
+                text:
+                    error?.response?.data?.message ||
+                    error?.message ||
+                    "Something went wrong"
+            });
 
         }
 
-    }
+    };
+
+
     const handleReject = async (id) => {
 
         const result = await Swal.fire({
-
-            title: "Reject Replacement?",
-
-            text: "This action cannot be undone.",
-
+            title: "Reject Replacement Request?",
+            text: "This replacement request will be rejected.",
             icon: "warning",
-
             showCancelButton: true,
-
             confirmButtonColor: "#dc2626",
+            cancelButtonColor: "#6b7280",
+            confirmButtonText: "Yes, Reject",
+            cancelButtonText: "Cancel",
+        });
 
-            confirmButtonText: "Reject"
-
-        })
-
-        if (!result.isConfirmed) return
+        if (!result.isConfirmed) return;
 
         try {
 
             Swal.fire({
-
                 title: "Please Wait...",
-
+                text: "Rejecting replacement request...",
                 allowOutsideClick: false,
-
-                didOpen: () => Swal.showLoading()
-
-            })
+                didOpen: () => Swal.showLoading(),
+            });
 
             const response = await post_api({
-
                 body: {
-
-                    replacement_request_id: id
-
+                    replacement_request_id: id,
                 },
-
                 params: null,
+                path: "user/reject-replacement",
+            });
 
-                path: "user/reject-replacement"
+            Swal.close();
 
-            })
-
-            Swal.close()
-
-            if (response.data.success) {
+            if (response?.data?.success) {
 
                 await Swal.fire({
-
                     icon: "success",
+                    title: "Success",
+                    text: response.data.message,
+                    timer: 1800,
+                    showConfirmButton: false,
+                });
 
-                    title: "Rejected"
-
-                })
-
-                fetchRequests()
-
+                fetchRequests();
+                return;
             }
+
+            Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text: response?.data?.message || "Unable to reject replacement request.",
+            });
 
         } catch (error) {
 
+            Swal.close();
+
             Swal.fire({
-
                 icon: "error",
-
                 title: "Error",
-
-                text: error?.response?.data?.message || "Something went wrong"
-
-            })
+                text:
+                    error?.response?.data?.message ||
+                    error?.message ||
+                    "Something went wrong.",
+            });
 
         }
 
-    }
+    };
 
     return (
 
