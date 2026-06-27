@@ -37,7 +37,7 @@ export default function Header() {
     if (token) {
       router.push('/dashboard')
     }
-  }, [])
+  }, [token])
 
   const dispatch = useDispatch();
 
