@@ -22,6 +22,13 @@ export default function Form() {
   console.log(token);
 
   useEffect(() => {
+    if (token) {
+      router.push('/dashboard')
+    }
+  }, [token])
+
+
+  useEffect(() => {
     if (otpTab) {
       router.push("/verify-otp");
     }

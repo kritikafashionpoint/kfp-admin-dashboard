@@ -33,11 +33,7 @@ export default function Header() {
     }
   }, [token, path]);
 
-  useEffect(() => {
-    if (token) {
-      router.push('/dashboard')
-    }
-  }, [token])
+  
 
   const dispatch = useDispatch();
 
